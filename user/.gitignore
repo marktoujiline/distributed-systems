@@ -1,12 +1,8 @@
 logs
 target
-.bloop
-metals.sbt
 /.idea
 /.idea_modules
 /.classpath
 /.project
 /.settings
-/.metals
-/.vscode
 /RUNNING_PID
