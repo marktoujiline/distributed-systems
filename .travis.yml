@@ -9,5 +9,15 @@ branches:
   only:
     - main
 
-script:
-   - sbt ++$TRAVIS_SCALA_VERSION test
+stages:
+  - name: test
+    if: branch != master
+  - name: release
+    if: branch = master
+
+jobs:
+  include:
+    - stage: test
+      script: sbt ++$TRAVIS_SCALA_VERSION test
+    - stage: release
+      script: sbt ++$TRAVIS_SCALA_VERSION release
