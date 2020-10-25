@@ -11,9 +11,9 @@ branches:
 
 stages:
   - name: test
-    if: branch != master
+    if: branch != main
   - name: release
-    if: branch = master
+    if: branch = main
 
 jobs:
   include:
