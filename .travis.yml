@@ -20,4 +20,4 @@ jobs:
     - stage: test
       script: sbt ++$TRAVIS_SCALA_VERSION test
     - stage: release
-      script: sbt ++$TRAVIS_SCALA_VERSION release
+      script: git checkout -f main && sbt ++$TRAVIS_SCALA_VERSION "release with-defaults" # https://github.com/sbt/sbt-release/issues/210#issuecomment-340361000
