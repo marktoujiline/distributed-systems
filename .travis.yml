@@ -33,4 +33,4 @@ jobs:
     - stage: test
       script: sbt ++$TRAVIS_SCALA_VERSION test
     - stage: release
-      script: git checkout -f main && sbt ++$TRAVIS_SCALA_VERSION "release with-defaults" # https://github.com/sbt/sbt-release/issues/210#issuecomment-340361000
+      script: git checkout -f main && echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && sbt ++$TRAVIS_SCALA_VERSION "release with-defaults" # https://github.com/sbt/sbt-release/issues/210#issuecomment-340361000

@@ -12,8 +12,8 @@ releaseProcess := Seq[ReleaseStep](
   inquireVersions,                        // : ReleaseStep
   runClean,                               // : ReleaseStep
   runTest,                                // : ReleaseStep
-  setReleaseVersion,                      // : ReleaseStep
-  commitReleaseVersion,                   // : ReleaseStep, performs the initial git checks
+  // setReleaseVersion,                      // : ReleaseStep
+  // commitReleaseVersion,                   // : ReleaseStep, performs the initial git checks
   tagRelease,                             // : ReleaseStep
   pushChanges,                            // : ReleaseStep, also checks that an upstream branch is properly configured
   releaseStepCommand("inventory/docker:publish"),
