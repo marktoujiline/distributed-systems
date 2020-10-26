@@ -20,6 +20,7 @@ before_install:
   - chmod 600 github_deploy_key
   - eval $(ssh-agent -s)
   - ssh-add github_deploy_key
+  - git remote set-url origin git@github.com:marktoujiline/distributed-systems.git
 
 stages:
   - name: test

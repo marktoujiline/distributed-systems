@@ -10,3 +10,4 @@ metals.sbt
 /.metals
 /.vscode
 /RUNNING_PID
+github_deploy_key
