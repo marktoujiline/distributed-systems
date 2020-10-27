@@ -20,14 +20,6 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges
 )
 
-// // strip the qualifier off the input version, eg. 1.2.1-SNAPSHOT -> 1.2.1
-// releaseVersion     := { ver => Version(ver).map(_.withoutQualifier.string).getOrElse(versionFormatError(ver)) }
-
-// // bump the version and append '-SNAPSHOT', eg. 1.2.1 -> 1.3.0-SNAPSHOT
-// releaseNextVersion := {
-//   ver => Version(ver).map(_.bump(releaseVersionBump.value).asSnapshot.string).getOrElse(versionFormatError(ver))
-// },
-
 // bump the version, eg. 1.2.1 -> 1.3.0
 releaseNextVersion := {
   ver => Version(ver).map(_.bump(releaseVersionBump.value).withoutQualifier.string).getOrElse(versionFormatError(ver))
