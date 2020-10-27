@@ -29,9 +29,6 @@ releaseNextVersion := {
 releaseTagComment        := s"Releasing ${(version in ThisBuild).value} [ci skip]"
 releaseNextCommitMessage := s"Setting version to ${(version in ThisBuild).value} [ci skip]"
 
-// https://github.com/lightbend/sbt-reactive-app/issues/177#issuecomment-462426674
-dockerChmodType := DockerChmodType.UserGroupWriteExecute
-
 lazy val root = (project in file(".")).aggregate(inventory, transaction, user)
 
 lazy val inventory = (project in file("inventory")).enablePlugins(PlayScala).settings(PlayKeys.playDefaultPort := 9001)
