@@ -1,6 +1,7 @@
 import play.sbt.PlayImport.PlayKeys
 import ReleaseTransformations._
 import sbtrelease.{Version, versionFormatError}
+import com.typesafe.sbt.packager.docker.DockerChmodType
 
 ThisBuild / organization := "touj"
 
@@ -27,6 +28,9 @@ releaseNextVersion := {
 
 releaseTagComment        := s"Releasing ${(version in ThisBuild).value} [ci skip]"
 releaseNextCommitMessage := s"Setting version to ${(version in ThisBuild).value} [ci skip]"
+
+// https://github.com/lightbend/sbt-reactive-app/issues/177#issuecomment-462426674
+dockerChmodType := DockerChmodType.UserGroupWriteExecute
 
 lazy val root = (project in file(".")).aggregate(inventory, transaction, user)
 
