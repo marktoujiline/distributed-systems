@@ -16,6 +16,8 @@ releaseProcess := Seq[ReleaseStep](
   releaseStepCommand("inventory/docker:publish"),
   releaseStepCommand("transaction/docker:publish"),
   releaseStepCommand("user/docker:publish"),
+  setNextVersion,
+  commitNextVersion,
   pushChanges
 )
 
