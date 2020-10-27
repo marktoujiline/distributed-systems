@@ -6,8 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,3 +17,15 @@ jobs:
         java-version: 1.8
     - name: Run tests
       run: sbt test
+
+  release:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: creds
+      run: |
+        git config --global user.name 'Mark Toujiline'
+        git config --global user.email 'mark.toujiline@users.noreply.github.com'
+    - name: Release
+      run: sbt "release with-defaults"
