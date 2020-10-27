@@ -14,12 +14,10 @@ releaseProcess := Seq[ReleaseStep](
   commitReleaseVersion,
   tagRelease,
   // publishArtifacts,
-  setNextVersion,
-  commitNextVersion,
-  pushChanges,
   releaseStepCommand("inventory/docker:publish"),
   releaseStepCommand("transaction/docker:publish"),
-  releaseStepCommand("user/docker:publish")
+  releaseStepCommand("user/docker:publish"),
+  pushChanges
 )
 
 releaseTagComment        := s"Releasing ${(version in ThisBuild).value} [ci skip]"
