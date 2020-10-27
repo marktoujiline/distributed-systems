@@ -3,23 +3,28 @@ import ReleaseTransformations._
 
 ThisBuild / organization := "touj"
 
-ThisBuild / version := "0.0.0"
-
 ThisBuild / scalaVersion := "2.13.3"
 
 releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,              // : ReleaseStep
-  inquireVersions,                        // : ReleaseStep
-  runClean,                               // : ReleaseStep
-  runTest,                                // : ReleaseStep
-  // setReleaseVersion,                      // : ReleaseStep
-  // commitReleaseVersion,                   // : ReleaseStep, performs the initial git checks
-  tagRelease,                             // : ReleaseStep
-  pushChanges,                            // : ReleaseStep, also checks that an upstream branch is properly configured
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  setNextVersion,
+  commitNextVersion,
+  pushChanges,
   releaseStepCommand("inventory/docker:publish"),
   releaseStepCommand("transaction/docker:publish"),
   releaseStepCommand("user/docker:publish")
 )
+
+releaseTagComment        := s"Releasing ${(version in ThisBuild).value} [ci skip]"
+releaseCommitMessage     := s"Setting version to ${(version in ThisBuild).value} [ci skip]"
+releaseNextCommitMessage := s"Setting version to ${(version in ThisBuild).value} [ci skip]"
 
 lazy val root = (project in file(".")).aggregate(inventory, transaction, user)
 
