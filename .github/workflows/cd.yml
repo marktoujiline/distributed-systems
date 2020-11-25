@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -22,4 +24,4 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Release
-      run: git checkout -f main && sbt "release with-defaults"
+      run: git branch && git log && git tag && sbt version && sbt "release with-defaults"

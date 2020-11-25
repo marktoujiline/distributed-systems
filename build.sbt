@@ -1,3 +1,4 @@
+import scala.sys.process._
 import play.sbt.PlayImport.PlayKeys
 import ReleaseTransformations._
 import sbtrelease.{Version, versionFormatError}
@@ -7,13 +8,14 @@ ThisBuild / organization := "touj"
 
 ThisBuild / scalaVersion := "2.13.3"
 
+git.useGitDescribe := true
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
+  setNextVersion,
   runClean,
   runTest,
-  setNextVersion,
-  commitNextVersion,
   tagRelease,
   releaseStepCommand("inventory/docker:publish"),
   releaseStepCommand("transaction/docker:publish"),
@@ -26,10 +28,7 @@ releaseNextVersion := {
   ver => Version(ver).map(_.bump(releaseVersionBump.value).withoutQualifier.string).getOrElse(versionFormatError(ver))
 }
 
-releaseTagComment        := s"Releasing ${(version in ThisBuild).value} [ci skip]"
-releaseNextCommitMessage := s"Setting version to ${(version in ThisBuild).value} [ci skip]"
-
-lazy val root = (project in file(".")).aggregate(inventory, transaction, user)
+lazy val root = (project in file(".")).aggregate(inventory, transaction, user).enablePlugins(GitVersioning)
 
 lazy val inventory = (project in file("inventory")).enablePlugins(PlayScala).settings(PlayKeys.playDefaultPort := 9001)
 lazy val transaction = (project in file("transaction")).enablePlugins(PlayScala).settings(PlayKeys.playDefaultPort := 9002)
