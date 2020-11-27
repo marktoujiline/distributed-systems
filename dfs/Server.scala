@@ -8,6 +8,11 @@ class Server(port: Int) {
 
     def run(): Unit = {
         val serverThread = new Thread {
+            /**
+              * Creates a socket bound to the port. At this point, other
+              * apps can no longer create sockets at the same port. Also,
+              * connections are not allowed until `accept` is called.
+              */
             val server = new ServerSocket(port);
 
             /**
@@ -24,15 +29,42 @@ class Server(port: Int) {
             override def run(): Unit = {
                 try {
                     while (!Thread.interrupted()) {
-                        val s = server.accept()
-                        val in = new BufferedSource(s.getInputStream()).getLines()
-                        val out = new PrintStream(s.getOutputStream())
-                        // Send message to socket recipient
-                        out.println(s"server-${in.next()}")
+                        /**
+                          * Block until connection is made.
+                          */
+                        val socket = server.accept()
+
+                        /**
+                          * In/out streams represent a stream of bytes.
+                          * Implemented read/write operations read/write a single
+                          * byte at a time. Blocks until data is available
+                          * or end of stream is detected.
+                          */
+                        val inputStream = socket.getInputStream()
+                        val outputStream = socket.getOutputStream()
+
+                        /**
+                          * BufferedSource and PrintStream are wrappers around lower level Stream objects.
+                          * Provide convenience methods.
+                          */
+                        val in = new BufferedSource(inputStream)
+                        val out = new PrintStream(outputStream)
+
+                        val it: Iterator[String] = in.getLines()
+                        
+                        // Send next line to socket recipient
+                        out.println(s"server-${it.next()}")
                     }
                 } catch {
                     case ex: SocketException =>
-                        println("Gracefully terminating ...")
+                        println("Socket was closed, terminating gracefully.")
+                    case ex: IOException => {
+                        println("Socket#accept failed")
+                        ex.printStackTrace()
+                    }
+                    case ex: SecurityException =>
+                        println("Security manager did not allow operation")
+                        ex.printStackTrace()
                 }
             }
         }
